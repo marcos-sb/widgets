@@ -5,8 +5,8 @@ import com.marcos_sb.widgets.model.impl.Widget;
 
 public class WidgetOps {
 
-    public static Widget updateWithSpec(Widget widget,
-                                        WidgetMutationSpec widgetMutationSpec) {
+    public static Widget update(Widget widget,
+                                WidgetMutationSpec widgetMutationSpec) {
         if (!widget.getUUID().equals(widgetMutationSpec.getUUID()))
             throw new IllegalArgumentException(
                 String.format("Cannot update widget. UUID mismatch (expected: '%s', actual '%s')",

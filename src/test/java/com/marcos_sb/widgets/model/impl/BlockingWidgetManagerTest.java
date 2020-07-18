@@ -99,7 +99,7 @@ public class BlockingWidgetManagerTest {
             void updatedWidget() throws WidgetManagerException {
                 final WidgetMutationSpec mutationSpec =
                     new WidgetMutationSpec(createdWidget.getUUID(), 0L, 0L, 0D, 0D, 0);
-                final Widget updatedWidget = WidgetOps.updateWithSpec(createdWidget, mutationSpec);
+                final Widget updatedWidget = WidgetOps.update(createdWidget, mutationSpec);
                 assertEquals(updatedWidget, widgetManager.update(mutationSpec));
             }
 

@@ -48,9 +48,7 @@ public class BlockingWidgetManager implements WidgetManager {
             lock.lock();
 
             UUID uuid;
-            do {
-                uuid = UUID.randomUUID();
-            } while (uuid2widget.containsKey(uuid));
+            do { uuid = UUID.randomUUID(); } while (uuid2widget.containsKey(uuid));
 
             // If the widget spec specifies a z-index value, existing widgets may
             // need to be shifted up.
@@ -157,7 +155,7 @@ public class BlockingWidgetManager implements WidgetManager {
                 return oldWidget;
             }
             final Widget newWidget =
-                WidgetOps.updateWithSpec(oldWidget, widgetMutationSpec);
+                WidgetOps.update(oldWidget, widgetMutationSpec);
 
             // If there's no change to the z-index, no shifting is required.
 
