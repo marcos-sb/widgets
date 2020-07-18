@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -16,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WidgetManager {
+
     private static final int zIndexStep = 10;
     private static Logger logger = LoggerFactory.getLogger(WidgetManager.class);
 
@@ -24,14 +24,20 @@ public class WidgetManager {
     private final ReentrantLock lock;
     private final ReentrantReadWriteLock rwLock;
 
-    public WidgetManager() {
-        this.uuid2widget = new ConcurrentHashMap<>();
-        this.widgets = new ConcurrentSkipListSet<>(Comparator.comparingInt(Widget::getZIndex));
+    public WidgetManager(ConcurrentMap<UUID, Widget> uuid2widget,
+                         ConcurrentSkipListSet<Widget> widgets) {
+        this.uuid2widget = uuid2widget;
+        this.widgets = widgets;
         this.lock = new ReentrantLock(true);
         this.rwLock = new ReentrantReadWriteLock(true);
     }
 
-    public Widget create(FullWidgetSpec fullWidgetSpec) throws WidgetManagerException {
+    public WidgetManager() {
+        this(new ConcurrentHashMap<>(),
+             new ConcurrentSkipListSet<>(Comparator.comparingInt(Widget::getZIndex)));
+    }
+
+    public Widget create(NewWidgetSpec newWidgetSpec) throws WidgetManagerException {
         try {
             lock.lock();
 
@@ -43,15 +49,15 @@ public class WidgetManager {
             // If the widget spec specifies a z-index value, existing widgets may
             // need to be shifted up.
             Widget newWidget;
-            if (fullWidgetSpec.hasZIndex()) {
-                newWidget = new Widget(uuid, fullWidgetSpec.getX(), fullWidgetSpec.getY(),
-                    fullWidgetSpec.getWidth(), fullWidgetSpec.getHeight(), fullWidgetSpec.getzIndex());
+            if (newWidgetSpec.hasZIndex()) {
+                newWidget = new Widget(uuid, newWidgetSpec.getX(), newWidgetSpec.getY(),
+                    newWidgetSpec.getWidth(), newWidgetSpec.getHeight(), newWidgetSpec.getzIndex());
                 shiftOverlyingWidgetsUp(newWidget);
             } else {
                 final int topZIndex = widgets.isEmpty() ? 0 : widgets.last().getZIndex();
                 final int newWidgetZIndex = topZIndex + zIndexStep;
-                newWidget = new Widget(uuid, fullWidgetSpec.getX(), fullWidgetSpec.getY(),
-                    fullWidgetSpec.getWidth(), fullWidgetSpec.getHeight(), newWidgetZIndex);
+                newWidget = new Widget(uuid, newWidgetSpec.getX(), newWidgetSpec.getY(),
+                    newWidgetSpec.getWidth(), newWidgetSpec.getHeight(), newWidgetZIndex);
             }
 
             uuid2widget.put(uuid, newWidget);
@@ -60,7 +66,7 @@ public class WidgetManager {
             return newWidget;
         } catch (Exception ex) {
             throw new WidgetManagerException(
-                String.format("An error occurred while creating a new widget '%s'", fullWidgetSpec), ex);
+                String.format("An error occurred while creating a new widget '%s'", newWidgetSpec), ex);
         } finally {
             lock.unlock();
         }
@@ -105,6 +111,8 @@ public class WidgetManager {
                     String.format("Widget with uuid '%s' not found", uuid));
 
             return uuid2widget.get(uuid);
+        } catch (NoSuchElementException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new WidgetManagerException(
                 String.format("An error occurred while getting a widget, uuid '%s'", uuid), ex);
@@ -177,7 +185,8 @@ public class WidgetManager {
             throw new WidgetManagerException(
                 String.format("An error occurred while updating a widget '%s'", widgetMutationSpec), ex);
         } finally {
-            rwLock.writeLock().unlock();
+            if (rwLock.isWriteLockedByCurrentThread())
+                rwLock.writeLock().unlock();
             lock.unlock();
         }
     }
@@ -185,8 +194,15 @@ public class WidgetManager {
     public Widget remove(UUID uuid) throws WidgetManagerException {
         try {
             lock.lock();
+
+            if (!uuid2widget.containsKey(uuid))
+                throw new NoSuchElementException(
+                    String.format("Widget with uuid '%s' not found", uuid));
+
             widgets.remove(uuid2widget.get(uuid));
             return uuid2widget.remove(uuid);
+        } catch (NoSuchElementException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new WidgetManagerException(
                 String.format("An error occurred while removing a widget, uuid '%s'", uuid), ex);

@@ -28,9 +28,9 @@ public class WidgetController {
 
     @PostMapping(value = "/new", produces = "application/json", consumes = "application/json")
     public ResponseEntity<Widget> createWidget(
-        @RequestBody FullWidgetSpec fullWidgetSpec
+        @RequestBody NewWidgetSpec newWidgetSpec
     ) throws WidgetManagerException {
-        return ResponseEntity.ok(widgetManager.create(fullWidgetSpec));
+        return ResponseEntity.ok(widgetManager.create(newWidgetSpec));
     }
 
     @GetMapping(value = "/{uuid}", produces = "application/json")
@@ -51,7 +51,7 @@ public class WidgetController {
     }
 
     @DeleteMapping("/delete/{uuid}")
-    public ResponseEntity deleteWidget(@PathVariable UUID uuid) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity deleteWidget(@PathVariable UUID uuid) throws WidgetManagerException {
+        return ResponseEntity.ok(widgetManager.remove(uuid));
     }
 }

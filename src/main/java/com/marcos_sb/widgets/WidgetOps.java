@@ -1,6 +1,7 @@
 package com.marcos_sb.widgets;
 
 public class WidgetOps {
+
     public static Widget updateWithSpec(Widget widget,
                                         WidgetMutationSpec widgetMutationSpec) {
         if (!widget.getUUID().equals(widgetMutationSpec.getUUID()))

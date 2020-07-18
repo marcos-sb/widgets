@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 public class WidgetMutationSpec {
+
     @JsonProperty(required = true)
     private final UUID uuid;
     private final Long x;

@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Widget {
+
     private final UUID uuid;
     private final long x;
     private final long y;
@@ -36,7 +37,7 @@ public class Widget {
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, lastModified);
+        return Objects.hash(uuid, x, y, width, height, lastModified, zIndex);
     }
 
     @Override
@@ -46,7 +47,12 @@ public class Widget {
         final Widget that = (Widget) obj;
         return
             this.uuid.equals(that.uuid) &&
-            this.lastModified.equals(that.lastModified);
+            this.x == that.x &&
+            this.y == that.y &&
+            this.width == that.width &&
+            this.height == that.height &&
+            this.lastModified.equals(that.lastModified) &&
+            this.zIndex.equals(that.zIndex);
     }
 
     @Override

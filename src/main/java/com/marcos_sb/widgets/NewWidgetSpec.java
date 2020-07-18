@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class FullWidgetSpec {
+public class NewWidgetSpec {
+
     @JsonProperty(required = true)
     private final long x;
     @JsonProperty(required = true)
@@ -17,7 +18,7 @@ public class FullWidgetSpec {
     private final Integer zIndex;
 
     @JsonCreator
-    public FullWidgetSpec(long x, long y, double width, double height, Integer zIndex) {
+    public NewWidgetSpec(long x, long y, double width, double height, Integer zIndex) {
         this.x = x;
         this.y = y;
         this.width = width;
