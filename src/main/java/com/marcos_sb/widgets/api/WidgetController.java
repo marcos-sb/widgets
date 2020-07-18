@@ -8,6 +8,7 @@ import com.marcos_sb.widgets.model.impl.BlockingWidgetManager;
 import com.marcos_sb.widgets.model.impl.Widget;
 import java.util.List;
 import java.util.UUID;
+import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class WidgetController {
 
     @PostMapping(value = "/new", produces = "application/json", consumes = "application/json")
     public ResponseEntity<Widget> createWidget(
-        @RequestBody NewWidgetSpec newWidgetSpec
+        @Valid @RequestBody NewWidgetSpec newWidgetSpec
     ) throws WidgetManagerException {
         return ResponseEntity.ok(widgetManager.create(newWidgetSpec));
     }
@@ -51,7 +52,7 @@ public class WidgetController {
 
     @PutMapping(value = "/update", produces = "application/json", consumes = "application/json")
     public ResponseEntity<Widget> updateWidget(
-        @RequestBody WidgetMutationSpec widgetMutationSpec
+        @Valid @RequestBody WidgetMutationSpec widgetMutationSpec
     ) throws WidgetManagerException {
         return ResponseEntity.ok(widgetManager.update(widgetMutationSpec));
     }

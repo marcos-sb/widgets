@@ -3,16 +3,20 @@ package com.marcos_sb.widgets.api.json;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.constraints.DecimalMin;
 
 public class NewWidgetSpec {
 
     @JsonProperty(required = true)
     private final long x;
+
     @JsonProperty(required = true)
     private final long y;
-    @JsonProperty(required = true)
+
+    @JsonProperty(required = true) @DecimalMin("0")
     private final double width;
-    @JsonProperty(required = true)
+
+    @JsonProperty(required = true) @DecimalMin("0")
     private final double height;
 
     private final Integer zIndex;

@@ -4,15 +4,22 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
+import javax.validation.constraints.DecimalMin;
 
 public class WidgetMutationSpec {
 
     @JsonProperty(required = true)
     private final UUID uuid;
+
     private final Long x;
     private final Long y;
+
+    @DecimalMin("0")
     private final Double width;
+
+    @DecimalMin("0")
     private final Double height;
+
     private final Integer zIndex;
 
     @JsonCreator

@@ -21,6 +21,10 @@ public class Widget {
     public Widget(UUID uuid, long x, long y, double width, double height,
                   @JsonProperty("last-modified") Instant lastModified,
                   @JsonProperty("z-index") Integer zIndex) {
+        if (width < 0)
+            throw new IllegalArgumentException("Width cannot be negative");
+        if (height < 0)
+            throw new IllegalArgumentException("Height cannot be negative");
         this.uuid = uuid;
         this.x = x;
         this.y = y;
