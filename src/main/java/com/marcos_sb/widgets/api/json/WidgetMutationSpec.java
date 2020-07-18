@@ -1,4 +1,4 @@
-package com.marcos_sb.widgets;
+package com.marcos_sb.widgets.api.json;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;

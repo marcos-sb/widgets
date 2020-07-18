@@ -1,7 +1,6 @@
-package com.marcos_sb.widgets;
+package com.marcos_sb.widgets.model.impl;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;

@@ -1,5 +1,10 @@
-package com.marcos_sb.widgets;
+package com.marcos_sb.widgets.model.impl;
 
+import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
+import com.marcos_sb.widgets.model.WidgetManager;
+import com.marcos_sb.widgets.util.WidgetOps;
+import com.marcos_sb.widgets.api.json.NewWidgetSpec;
+import com.marcos_sb.widgets.exception.WidgetManagerException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,29 +19,30 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WidgetManager {
+public class BlockingWidgetManager implements WidgetManager {
 
     private static final int zIndexStep = 10;
-    private static Logger logger = LoggerFactory.getLogger(WidgetManager.class);
+    private static Logger logger = LoggerFactory.getLogger(BlockingWidgetManager.class);
 
     private final ConcurrentMap<UUID, Widget> uuid2widget;
     private final ConcurrentSkipListSet<Widget> widgets;
     private final ReentrantLock lock;
     private final ReentrantReadWriteLock rwLock;
 
-    public WidgetManager(ConcurrentMap<UUID, Widget> uuid2widget,
-                         ConcurrentSkipListSet<Widget> widgets) {
+    public BlockingWidgetManager(ConcurrentMap<UUID, Widget> uuid2widget,
+                                 ConcurrentSkipListSet<Widget> widgets) {
         this.uuid2widget = uuid2widget;
         this.widgets = widgets;
         this.lock = new ReentrantLock(true);
         this.rwLock = new ReentrantReadWriteLock(true);
     }
 
-    public WidgetManager() {
+    public BlockingWidgetManager() {
         this(new ConcurrentHashMap<>(),
              new ConcurrentSkipListSet<>(Comparator.comparingInt(Widget::getZIndex)));
     }
 
+    @Override
     public Widget create(NewWidgetSpec newWidgetSpec) throws WidgetManagerException {
         try {
             lock.lock();
@@ -103,6 +109,7 @@ public class WidgetManager {
         }
     }
 
+    @Override
     public Widget get(UUID uuid) throws WidgetManagerException {
         try {
             rwLock.readLock().lock();
@@ -121,6 +128,7 @@ public class WidgetManager {
         }
     }
 
+    @Override
     public List<Widget> getAllByZIndex() throws WidgetManagerException {
         try {
             rwLock.readLock().lock();
@@ -132,6 +140,7 @@ public class WidgetManager {
         }
     }
 
+    @Override
     public Widget update(WidgetMutationSpec widgetMutationSpec) throws WidgetManagerException {
         try {
             lock.lock();
@@ -191,6 +200,7 @@ public class WidgetManager {
         }
     }
 
+    @Override
     public Widget remove(UUID uuid) throws WidgetManagerException {
         try {
             lock.lock();
@@ -211,10 +221,12 @@ public class WidgetManager {
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return uuid2widget.isEmpty() && widgets.isEmpty();
     }
 
+    @Override
     public int size() {
         return uuid2widget.size();
     }

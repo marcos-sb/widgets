@@ -1,5 +1,10 @@
-package com.marcos_sb.widgets;
+package com.marcos_sb.widgets.api;
 
+import com.marcos_sb.widgets.api.json.NewWidgetSpec;
+import com.marcos_sb.widgets.model.impl.Widget;
+import com.marcos_sb.widgets.model.impl.BlockingWidgetManager;
+import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
+import com.marcos_sb.widgets.exception.WidgetManagerException;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/widgets")
 public class WidgetController {
 
-    private final WidgetManager widgetManager;
+    private final BlockingWidgetManager widgetManager;
 
-    public WidgetController(WidgetManager widgetManager) {
+    public WidgetController(BlockingWidgetManager widgetManager) {
         this.widgetManager = widgetManager;
     }
 
     public WidgetController() {
-        this(new WidgetManager());
+        this(new BlockingWidgetManager());
     }
 
     @PostMapping(value = "/new", produces = "application/json", consumes = "application/json")

@@ -1,4 +1,4 @@
-package com.marcos_sb.widgets;
+package com.marcos_sb.widgets.exception;
 
 public class WidgetManagerException extends Exception {
 
