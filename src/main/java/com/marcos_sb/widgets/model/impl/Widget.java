@@ -37,7 +37,7 @@ public class Widget {
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, x, y, width, height, lastModified, zIndex);
+        return Objects.hash(uuid, x, y, width, height, zIndex);
     }
 
     @Override
@@ -51,7 +51,6 @@ public class Widget {
             this.y == that.y &&
             Double.compare(this.width, that.width) == 0 &&
             Double.compare(this.height, that.height) == 0 &&
-            this.lastModified.equals(that.lastModified) &&
             this.zIndex.equals(that.zIndex);
     }
 

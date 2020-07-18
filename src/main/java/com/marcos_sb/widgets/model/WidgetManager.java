@@ -1,7 +1,7 @@
 package com.marcos_sb.widgets.model;
 
-import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
 import com.marcos_sb.widgets.api.json.NewWidgetSpec;
+import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
 import com.marcos_sb.widgets.exception.WidgetManagerException;
 import com.marcos_sb.widgets.model.impl.Widget;
 import java.util.List;

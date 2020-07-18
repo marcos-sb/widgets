@@ -1,14 +1,8 @@
 package com.marcos_sb.widgets.model.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.marcos_sb.widgets.api.json.NewWidgetSpec;
 import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
 import com.marcos_sb.widgets.exception.WidgetManagerException;
-import com.marcos_sb.widgets.model.impl.BlockingWidgetManager;
-import com.marcos_sb.widgets.model.impl.Widget;
 import com.marcos_sb.widgets.util.WidgetOps;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +13,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlockingWidgetManagerTest {
 

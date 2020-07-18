@@ -1,7 +1,7 @@
 package com.marcos_sb.widgets.util;
 
-import com.marcos_sb.widgets.model.impl.Widget;
 import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
+import com.marcos_sb.widgets.model.impl.Widget;
 
 public class WidgetOps {
 

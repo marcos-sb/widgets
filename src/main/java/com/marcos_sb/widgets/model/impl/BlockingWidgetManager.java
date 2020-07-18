@@ -1,10 +1,10 @@
 package com.marcos_sb.widgets.model.impl;
 
+import com.marcos_sb.widgets.api.json.NewWidgetSpec;
 import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
+import com.marcos_sb.widgets.exception.WidgetManagerException;
 import com.marcos_sb.widgets.model.WidgetManager;
 import com.marcos_sb.widgets.util.WidgetOps;
-import com.marcos_sb.widgets.api.json.NewWidgetSpec;
-import com.marcos_sb.widgets.exception.WidgetManagerException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
