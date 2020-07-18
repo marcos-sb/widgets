@@ -210,4 +210,12 @@ public class WidgetManager {
             lock.unlock();
         }
     }
+
+    public boolean isEmpty() {
+        return uuid2widget.isEmpty() && widgets.isEmpty();
+    }
+
+    public int size() {
+        return uuid2widget.size();
+    }
 }

@@ -26,6 +26,10 @@ public class NewWidgetSpec {
         this.zIndex = zIndex;
     }
 
+    public NewWidgetSpec(long x, long y, double width, double height) {
+        this(x, y, width, height, null);
+    }
+
     @Override
     public String toString() {
         return String.format("[x:%d, y:%d, w:%.2f, h:%.2f, z:%d]",

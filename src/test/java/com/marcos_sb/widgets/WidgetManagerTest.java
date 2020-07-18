@@ -1,18 +1,14 @@
 package com.marcos_sb.widgets;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,8 +16,6 @@ import org.junit.jupiter.api.Test;
 
 public class WidgetManagerTest {
 
-    private ConcurrentMap<UUID, Widget> uuid2widget;
-    private ConcurrentSkipListSet<Widget> widgets;
     private WidgetManager widgetManager;
 
     @Nested
@@ -33,17 +27,13 @@ public class WidgetManagerTest {
 
         @BeforeEach
         void createNewWidgetManager() {
-            uuid2widget = new ConcurrentHashMap<>();
-            widgets = new ConcurrentSkipListSet<>(Comparator.comparingInt(Widget::getZIndex));
-            widgetManager = new WidgetManager(uuid2widget, widgets);
+            widgetManager = new WidgetManager();
         }
 
         @Test
         @DisplayName("is empty")
         void isEmpty() {
-            assertAll("widgets",
-                () -> assertTrue(uuid2widget::isEmpty),
-                () -> assertTrue(widgets::isEmpty));
+            assertTrue(widgetManager.isEmpty());
         }
 
         @Test
@@ -72,7 +62,7 @@ public class WidgetManagerTest {
 
         @Nested
         @DisplayName("after creating one widget")
-        class AfterCreatingOne {
+        class AfterCreatingOneWidget {
 
             final NewWidgetSpec widgetSpecZIndex = new NewWidgetSpec(0, 1, 2, 3, -1);
             Widget createdWidget;
@@ -83,19 +73,9 @@ public class WidgetManagerTest {
             }
 
             @Test
-            @DisplayName("is not empty")
-            void isNotEmpty() {
-                assertAll("widgets",
-                    () -> assertFalse(uuid2widget::isEmpty),
-                    () -> assertFalse(widgets::isEmpty));
-            }
-
-            @Test
-            @DisplayName("internal map and set of size 1")
+            @DisplayName("has size 1")
             void mapAndSetOfSize1() {
-                assertAll("widgets",
-                    () -> assertEquals(1, uuid2widget.size()),
-                    () -> assertEquals(1, widgets.size()));
+                assertEquals(1, widgetManager.size());
             }
 
             @Test
@@ -126,12 +106,78 @@ public class WidgetManagerTest {
             }
 
             @Test
-            @DisplayName("remove makes internal map and set empty")
+            @DisplayName("remove makes it empty")
             void removedWidgetIsEmpty() throws WidgetManagerException {
                 widgetManager.remove(createdWidget.getUUID());
-                assertAll("widgets",
-                    () -> assertTrue(uuid2widget::isEmpty),
-                    () -> assertTrue(widgets::isEmpty));
+                assertTrue(widgetManager.isEmpty());
+            }
+        }
+
+        @Nested
+        @DisplayName("after creating two widgets")
+        class AfterCreatingTwoWidgets {
+
+            final NewWidgetSpec widgetSpecZIndex1 = new NewWidgetSpec(0, 1, 2, 3, -1);
+            final NewWidgetSpec widgetSpecZIndex2 = new NewWidgetSpec(0, 0, 0, 0, 0);
+            Widget createdWidgetZIndex1;
+            Widget createdWidgetZIndex2;
+
+            @BeforeEach
+            void createTwoWidgets() throws WidgetManagerException {
+                createdWidgetZIndex1 = widgetManager.create(widgetSpecZIndex1);
+                createdWidgetZIndex2 = widgetManager.create(widgetSpecZIndex2);
+            }
+
+            @Test
+            @DisplayName("create new w/o z-index appears on top")
+            void createEmptyZIndexOnTop() throws WidgetManagerException {
+                final NewWidgetSpec widgetSpecNoZIndex = new NewWidgetSpec(0, 1, 2, 3);
+                final Widget createdWidgetNoZIndex = widgetManager.create(widgetSpecNoZIndex);
+                final List<Widget> allWidgets =
+                    Arrays.asList(createdWidgetZIndex1, createdWidgetZIndex2, createdWidgetNoZIndex);
+
+                assertEquals(allWidgets, widgetManager.getAllByZIndex());
+            }
+
+            @Test
+            @DisplayName("create new w/ existing z-index shifts up")
+            void createWithZIndexShifts() throws WidgetManagerException {
+                final NewWidgetSpec widgetSpecExistingZIndex = new NewWidgetSpec(0, 1, 2, 3, -1);
+                final Widget createdWidgetExistingZIndex = widgetManager.create(widgetSpecExistingZIndex);
+                final List<Widget> allWidgets =
+                    Arrays.asList(createdWidgetExistingZIndex, createdWidgetZIndex1, createdWidgetZIndex2);
+
+                assertEquals(allWidgets, widgetManager.getAllByZIndex());
+            }
+
+            @Test
+            @DisplayName("get all returns list in ascending z-index")
+            void getAll() throws WidgetManagerException {
+                final List<Widget> allWidgets =
+                    Arrays.asList(createdWidgetZIndex1, createdWidgetZIndex2);
+                assertEquals(allWidgets, widgetManager.getAllByZIndex());
+            }
+
+            @Test
+            @DisplayName("update z-index top-to-bottom")
+            void updateZIndexTopToBottom() throws WidgetManagerException {
+                final WidgetMutationSpec mutateWidget2BelowWidget1 =
+                    new WidgetMutationSpec(createdWidgetZIndex2.getUUID(), null, null, null, null, -2);
+                final Widget mutatedWidget2 = widgetManager.update(mutateWidget2BelowWidget1);
+                final List<Widget> allWidgets = Arrays.asList(mutatedWidget2, createdWidgetZIndex1);
+
+                assertEquals(allWidgets, widgetManager.getAllByZIndex());
+            }
+
+            @Test
+            @DisplayName("update z-index top-to-bottom overlapping z-index")
+            void updateZIndexTopToBottomOverlap() throws WidgetManagerException {
+                final WidgetMutationSpec mutateWidget2OverlapWidget1 =
+                    new WidgetMutationSpec(createdWidgetZIndex2.getUUID(), null, null, null, null, -1);
+                final Widget mutatedWidget2 = widgetManager.update(mutateWidget2OverlapWidget1);
+                final List<Widget> allWidgets = Arrays.asList(mutatedWidget2, createdWidgetZIndex1);
+
+                assertEquals(allWidgets, widgetManager.getAllByZIndex());
             }
         }
     }

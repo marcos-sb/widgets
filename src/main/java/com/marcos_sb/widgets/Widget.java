@@ -1,6 +1,7 @@
 package com.marcos_sb.widgets;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
@@ -49,8 +50,8 @@ public class Widget {
             this.uuid.equals(that.uuid) &&
             this.x == that.x &&
             this.y == that.y &&
-            this.width == that.width &&
-            this.height == that.height &&
+            Double.compare(this.width, that.width) == 0 &&
+            Double.compare(this.height, that.height) == 0 &&
             this.lastModified.equals(that.lastModified) &&
             this.zIndex.equals(that.zIndex);
     }
