@@ -1,6 +1,7 @@
 package com.marcos_sb.widgets.resource;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.util.Objects;
@@ -95,6 +96,7 @@ public class Widget {
         this.lastModified = Instant.now();
     }
 
+    @JsonIgnore
     public int getZIndex() {
         return zIndex;
     }

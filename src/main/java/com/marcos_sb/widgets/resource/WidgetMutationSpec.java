@@ -5,10 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 public class WidgetMutationSpec {
 
-    @JsonProperty(required = true)
+    @JsonProperty(required = true) @NotNull
     private final UUID uuid;
 
     private final Long x;
@@ -59,6 +60,7 @@ public class WidgetMutationSpec {
         return height;
     }
 
+    @JsonIgnore
     public Integer getZIndex() {
         return zIndex;
     }

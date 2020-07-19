@@ -20,6 +20,32 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class implements a thread-safe in-memory {@link WidgetManager}
+ * to handle various operations on {@link Widget}s. The consistency guarantees
+ * provided by this implementation include those specified in the
+ * {@link WidgetManager} interface, namely UUID and z-index uniqueness, and
+ * atomic updates to the {@link Widget}'s properties.
+ * </p>
+ * This class has been designed making no assumptions regarding the query
+ * pattern of client applications, i.e. no one method is expected to be invoked
+ * more often than any other.
+ * </p>
+ * This implementation provides thread-safety to client classes using two-level
+ * locking with a {@link ReentrantLock} to protect the critical section in
+ * state-mutating operations, and a {@link ReentrantReadWriteLock} to maintain the
+ * consistency requirements while updating the {@link Widget}'s z-index
+ * in case of overlapping z-indexes -- otherwise, reading operations may observe a state
+ * that's missing {@link Widget}s that another thread is shifting. This thread-locking
+ * approach has been implemented to reduce blocking as much as possible.
+ * </p>
+ * Additionally, this class relies on the concurrency mechanics provided by
+ * the {@link ConcurrentHashMap} for average-case constant-time {@link Widget}
+ * look-ups, and the {@link ConcurrentSkipListSet} for logarithmic-time z-index look-ups,
+ * and thread-safe traversals of the {@Widget} set.
+ *
+ * @see WidgetManager
+ */
 public class BlockingWidgetManager implements WidgetManager {
 
     private static final int zIndexStep = 10;

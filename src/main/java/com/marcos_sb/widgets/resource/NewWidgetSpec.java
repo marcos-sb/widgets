@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 public class NewWidgetSpec {
 
-    @JsonProperty(required = true)
+    @JsonProperty(required = true) @NotNull
     private final long x;
 
-    @JsonProperty(required = true)
+    @JsonProperty(required = true) @NotNull
     private final long y;
 
     @JsonProperty(required = true) @DecimalMin("0")
@@ -58,6 +59,7 @@ public class NewWidgetSpec {
         return height;
     }
 
+    @JsonIgnore
     public Integer getzIndex() {
         return zIndex;
     }
