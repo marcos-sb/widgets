@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class WidgetControllerIntegrationTests {
+class WidgetControllerIT {
 
 	@Autowired
 	private MockMvc mockMvc;
