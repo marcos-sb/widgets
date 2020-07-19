@@ -30,6 +30,6 @@ public class WidgetOps {
 
     public static Widget widgetFrom(UUID uuid, NewWidgetSpec newWidgetSpec, int zIndex) {
         return new Widget(uuid, newWidgetSpec.getX(), newWidgetSpec.getY(),
-            newWidgetSpec.getWidth(), newWidgetSpec.getHeight(), newWidgetSpec.getzIndex());
+            newWidgetSpec.getWidth(), newWidgetSpec.getHeight(), zIndex);
     }
 }
