@@ -1,7 +1,8 @@
 package com.marcos_sb.widgets.model.impl;
 
-import com.marcos_sb.widgets.api.json.NewWidgetSpec;
-import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
+import com.marcos_sb.widgets.resource.NewWidgetSpec;
+import com.marcos_sb.widgets.resource.Widget;
+import com.marcos_sb.widgets.resource.WidgetMutationSpec;
 import com.marcos_sb.widgets.exception.WidgetManagerException;
 import com.marcos_sb.widgets.model.WidgetManager;
 import com.marcos_sb.widgets.util.WidgetOps;
@@ -54,14 +55,12 @@ public class BlockingWidgetManager implements WidgetManager {
             // need to be shifted up.
             Widget newWidget;
             if (newWidgetSpec.hasZIndex()) {
-                newWidget = new Widget(uuid, newWidgetSpec.getX(), newWidgetSpec.getY(),
-                    newWidgetSpec.getWidth(), newWidgetSpec.getHeight(), newWidgetSpec.getzIndex());
+                newWidget = WidgetOps.widgetFrom(uuid, newWidgetSpec, newWidgetSpec.getzIndex());
                 shiftOverlyingWidgetsUp(newWidget);
             } else {
                 final int topZIndex = widgets.isEmpty() ? 0 : widgets.last().getZIndex();
                 final int newWidgetZIndex = topZIndex + zIndexStep;
-                newWidget = new Widget(uuid, newWidgetSpec.getX(), newWidgetSpec.getY(),
-                    newWidgetSpec.getWidth(), newWidgetSpec.getHeight(), newWidgetZIndex);
+                newWidget = WidgetOps.widgetFrom(uuid, newWidgetSpec, newWidgetZIndex);
             }
 
             uuid2widget.put(uuid, newWidget);
@@ -78,7 +77,7 @@ public class BlockingWidgetManager implements WidgetManager {
 
     private void shiftOverlyingWidgetsUp(Widget widget) {
         final Widget floorWidget = widgets.floor(widget);
-        if (floorWidget != null && floorWidget.getZIndex().equals(widget.getZIndex())) {
+        if (floorWidget != null && floorWidget.getZIndex() == widget.getZIndex()) {
             final List<Widget> toIncZIndex = new ArrayList<>();
 
             // Finds first gap between widgets above 'newWidget'
@@ -89,7 +88,7 @@ public class BlockingWidgetManager implements WidgetManager {
             while (true) {
                 toIncZIndex.add(prev);
                 current = widgets.higher(prev);
-                if (current != null && current.getZIndex().equals(prev.getZIndex() + 1))
+                if (current != null && current.getZIndex() == prev.getZIndex() + 1)
                     prev = current;
                 else break;
             }

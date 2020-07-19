@@ -1,9 +1,9 @@
 package com.marcos_sb.widgets.model;
 
-import com.marcos_sb.widgets.api.json.NewWidgetSpec;
-import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
+import com.marcos_sb.widgets.resource.NewWidgetSpec;
+import com.marcos_sb.widgets.resource.WidgetMutationSpec;
 import com.marcos_sb.widgets.exception.WidgetManagerException;
-import com.marcos_sb.widgets.model.impl.Widget;
+import com.marcos_sb.widgets.resource.Widget;
 import java.util.List;
 import java.util.UUID;
 

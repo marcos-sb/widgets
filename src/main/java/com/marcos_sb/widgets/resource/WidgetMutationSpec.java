@@ -1,4 +1,4 @@
-package com.marcos_sb.widgets.api.json;
+package com.marcos_sb.widgets.resource;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,6 +20,7 @@ public class WidgetMutationSpec {
     @DecimalMin("0")
     private final Double height;
 
+    @JsonProperty("z-index")
     private final Integer zIndex;
 
     @JsonCreator

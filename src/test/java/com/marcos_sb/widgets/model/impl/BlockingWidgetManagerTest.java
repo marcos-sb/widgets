@@ -1,7 +1,8 @@
 package com.marcos_sb.widgets.model.impl;
 
-import com.marcos_sb.widgets.api.json.NewWidgetSpec;
-import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
+import com.marcos_sb.widgets.resource.NewWidgetSpec;
+import com.marcos_sb.widgets.resource.Widget;
+import com.marcos_sb.widgets.resource.WidgetMutationSpec;
 import com.marcos_sb.widgets.exception.WidgetManagerException;
 import com.marcos_sb.widgets.util.WidgetOps;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BlockingWidgetManagerTest {
+class BlockingWidgetManagerTest {
 
     private BlockingWidgetManager widgetManager;
 
@@ -78,7 +79,7 @@ public class BlockingWidgetManagerTest {
 
             @Test
             @DisplayName("has size 1")
-            void mapAndSetOfSize1() {
+            void sizeOf1() {
                 assertEquals(1, widgetManager.size());
             }
 

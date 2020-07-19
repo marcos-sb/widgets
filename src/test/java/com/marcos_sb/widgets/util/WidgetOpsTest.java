@@ -1,7 +1,7 @@
 package com.marcos_sb.widgets.util;
 
-import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
-import com.marcos_sb.widgets.model.impl.Widget;
+import com.marcos_sb.widgets.resource.WidgetMutationSpec;
+import com.marcos_sb.widgets.resource.Widget;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class WidgetOpsTest {
+class WidgetOpsTest {
 
     private Widget widget;
 

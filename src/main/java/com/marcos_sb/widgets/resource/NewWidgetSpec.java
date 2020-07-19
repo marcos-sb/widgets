@@ -1,4 +1,4 @@
-package com.marcos_sb.widgets.api.json;
+package com.marcos_sb.widgets.resource;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,10 +19,12 @@ public class NewWidgetSpec {
     @JsonProperty(required = true) @DecimalMin("0")
     private final double height;
 
+    @JsonProperty("z-index")
     private final Integer zIndex;
 
     @JsonCreator
-    public NewWidgetSpec(long x, long y, double width, double height, Integer zIndex) {
+    public NewWidgetSpec(long x, long y, double width, double height,
+                         @JsonProperty("z-index") Integer zIndex) {
         this.x = x;
         this.y = y;
         this.width = width;

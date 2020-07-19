@@ -1,5 +1,6 @@
-package com.marcos_sb.widgets.model.impl;
+package com.marcos_sb.widgets.resource;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.util.Objects;
@@ -15,12 +16,13 @@ public class Widget {
 
     @JsonProperty("last-modified")
     private Instant lastModified;
-    @JsonProperty("z-index")
-    private Integer zIndex;
 
+    @JsonProperty("z-index")
+    private int zIndex;
+
+    @JsonCreator
     public Widget(UUID uuid, long x, long y, double width, double height,
-                  @JsonProperty("last-modified") Instant lastModified,
-                  @JsonProperty("z-index") Integer zIndex) {
+                  Instant lastModified, int zIndex) {
         if (width < 0)
             throw new IllegalArgumentException("Width cannot be negative");
         if (height < 0)
@@ -34,7 +36,7 @@ public class Widget {
         this.zIndex = zIndex;
     }
 
-    public Widget(UUID uuid, long x, long y, double width, double height, Integer zIndex) {
+    public Widget(UUID uuid, long x, long y, double width, double height, int zIndex) {
         this(uuid, x, y, width, height, Instant.now(), zIndex);
     }
 
@@ -55,13 +57,13 @@ public class Widget {
             this.y == that.y &&
             Double.compare(this.width, that.width) == 0 &&
             Double.compare(this.height, that.height) == 0 &&
-            this.zIndex.equals(that.zIndex);
+            this.zIndex == that.zIndex;
     }
 
     @Override
     public String toString() {
-        return String.format("[u:%s, x:%d, y:%d, w:%.2f, h:%.2f, z:%d]",
-                uuid, x, y, width, height, zIndex);
+        return String.format("[u:%s, x:%d, y:%d, w:%.2f, h:%.2f, lm:%s z:%d]",
+                uuid, x, y, width, height, lastModified, zIndex);
     }
 
     public UUID getUUID() {
@@ -93,7 +95,7 @@ public class Widget {
         this.lastModified = Instant.now();
     }
 
-    public Integer getZIndex() {
+    public int getZIndex() {
         return zIndex;
     }
 }

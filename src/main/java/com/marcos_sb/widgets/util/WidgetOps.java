@@ -1,7 +1,9 @@
 package com.marcos_sb.widgets.util;
 
-import com.marcos_sb.widgets.api.json.WidgetMutationSpec;
-import com.marcos_sb.widgets.model.impl.Widget;
+import com.marcos_sb.widgets.resource.NewWidgetSpec;
+import com.marcos_sb.widgets.resource.WidgetMutationSpec;
+import com.marcos_sb.widgets.resource.Widget;
+import java.util.UUID;
 
 public class WidgetOps {
 
@@ -24,5 +26,10 @@ public class WidgetOps {
             widgetMutationSpec.getZIndex() != null ? widgetMutationSpec.getZIndex() : widget.getZIndex();
 
         return new Widget(widget.getUUID(), newX, newY, newWidth, newHeight, newZIndex);
+    }
+
+    public static Widget widgetFrom(UUID uuid, NewWidgetSpec newWidgetSpec, int zIndex) {
+        return new Widget(uuid, newWidgetSpec.getX(), newWidgetSpec.getY(),
+            newWidgetSpec.getWidth(), newWidgetSpec.getHeight(), newWidgetSpec.getzIndex());
     }
 }
