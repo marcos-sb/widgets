@@ -9,8 +9,8 @@ The application targets Java 8 and uses Spring Boot to implement the web layer. 
 ## Test
 
 `./mvnw test` runs the unit tests  
-`./mvnw integration-test` runs the integration tests
+`./mvnw integration-test` runs the unit+integration tests
 
 ## Run
 
-`./mvnw spring-boot:run` will build _Widgets_ and start Tomcat bound to `localhost:8080`
+`./mvnw spring-boot:run` will build _Widgets_ and bootstrap Tomcat bound to `localhost:8080`
